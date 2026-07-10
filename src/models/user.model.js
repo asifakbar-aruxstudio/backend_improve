@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
 
-fullname: {
+fullName: {
         type: String,
         required: true,
         trim: true
     },
 
-    username: {     
+    userName: {     
     type: String,
         required: true,
         lowercase: true,
@@ -66,8 +66,8 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 userSchema.genrateAccesssToken = function () {
     return jwt.sign({
          id: this._id,
-         fullname: this.fullname,
-         username: this.username,
+         fullName: this.fullName,
+         userName: this.userName,
          email: this.email
         },
          process.env.ACCESS_TOKEN_SECRET,    
