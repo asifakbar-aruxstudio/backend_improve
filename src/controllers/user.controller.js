@@ -1,7 +1,6 @@
 import asyncHandler from "../utills/asyncHandler.js";
-import { User } from "../models/user.model.js"
-import { ApiError } from "../utills/ApiError.js";   
-import  ApiResponse  from "../utills/ApiResponse.js";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utills/ApiError.js";
 import { uploadToCloudinary } from "../utills/cloudinary.js";
 
 
@@ -46,7 +45,7 @@ const registerUser = asyncHandler(async(req, res) => {
     throw new ApiError(500, "Failed to upload images");
    }    
 
-   User.create({
+   const user = await User.create({
     fullName,
     userName: userName.toLowerCase(),
     email,
@@ -54,15 +53,19 @@ const registerUser = asyncHandler(async(req, res) => {
     avatar: avatar.url,
     coverImage: coverImage.url
 });
-    const createdUser = await User.findById(User._id).select(
+    const createdUser = await User.findById(user._id).select(
         "-password -refreshToken")
         if(!createdUser){
             throw new ApiError(500, "User not found after creation");
         } 
         
         return res.status(201).json(
-        new ApiResponse(201, createdUser, "User registered successfully")
-        )
-});
+        {
+            success: true,
+            user: createdUser,
+            massage: "User registered successfully"
+
+         })
+})
 
 export { registerUser };
