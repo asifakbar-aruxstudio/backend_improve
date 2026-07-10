@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async(req, res) => {
         throw new ApiError(400, "All fields are required");
     }
 
-   const ExistUser = await User.findone({
+   const ExistUser = await User.findOne({
     $or: [{ email }, { username }],
    })
    if(ExistUser){
@@ -55,19 +55,17 @@ const registerUser = asyncHandler(async(req, res) => {
 })
 
     const createdUser = await User.findById(User._id).select(
-        "-password -accessToken"
-    )
+        "-password -accessToken")
         if(!createdUser){
             throw new ApiError(500, "User not found after creation");
         } 
         
         return res.status(201).json({
-            new ApiResponse(200, createdUser, "User registered successfully")
-        });
-
-});   
-
+        new ApiResponse(201, createdUser, "User registered successfully")
+        
+    });
 
 
+});
 
 export { registerUser };
