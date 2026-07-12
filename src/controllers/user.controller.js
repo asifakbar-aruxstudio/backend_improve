@@ -2,6 +2,7 @@ import asyncHandler from "../utills/asyncHandler.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utills/ApiError.js";
 import { uploadToCloudinary } from "../utills/cloudinary.js";
+import { ApiResponse } from "../utills/ApiResponse.js";
 
 
 const registerUser = asyncHandler(async(req, res) => {
@@ -31,27 +32,27 @@ const registerUser = asyncHandler(async(req, res) => {
     throw new ApiError(409, "User already exists");
    }    
 
-   const avatarLocalPath = req.files?.avatar[0]?.path;
-   const coverImageLocalPath = req.files?.coverImage[0]?.path;
+//    const avatarLocalPath = req.files?.avatar[0]?.path;
+//    const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-   if (!avatarLocalPath || !coverImageLocalPath) {
-    throw new ApiError(400, "Avatar and cover image are required");
-   }    
+//    if (!avatarLocalPath || !coverImageLocalPath) {
+//     throw new ApiError(400, "Avatar and cover image are required");
+//    }    
 
-   const avatar = await uploadToCloudinary(avatarLocalPath, "avatar");
-   const coverImage = await uploadToCloudinary(coverImageLocalPath, "coverImage");
+   //const avatar = await uploadToCloudinary(avatarLocalPath, "avatar");
+   //const coverImage = await uploadToCloudinary(coverImageLocalPath, "coverImage");
 
-   if(!avatar && !coverImage){
-    throw new ApiError(500, "Failed to upload images");
-   }    
+// //   if(!avatar || !coverImage){
+//     throw new ApiError(500, "Failed to upload images");
+//    }    
 
    const user = await User.create({
     fullName,
     userName: userName.toLowerCase(),
     email,
     password,
-    avatar: avatar.url,
-    coverImage: coverImage?.url || "",
+    // avatar: avatar.url,
+    // coverImage: coverImage?.url || "",
 });
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
         if(!createdUser){

@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 const userSchema = new mongoose.Schema({
+
 
 fullName: {
         type: String,
@@ -22,14 +25,14 @@ fullName: {
         unique: true,
         trim: true
     },
-        avatar: {
-        type: String,
-        default: "https://res.cloudinary.com/dxj0gqv1f/image/upload/v1690911685/avatars/default-avatar_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1.png",
-    },
-    coverImage: {
-        type: String,
-        default: "https://res.cloudinary.com/dxj0gqv1f/image/upload/v1690911685/avatars/default-cover_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1.png",
-    },  
+    //  avatar: {
+    //     type: String,
+    //     default: "https://res.cloudinary.com/dxj0gqv1f/image/upload/v1690911685/avatars/default-avatar_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1.png",
+    // },
+    // coverImage: {
+    //     type: String,
+    //     default: "https://res.cloudinary.com/dxj0gqv1f/image/upload/v1690911685/avatars/default-cover_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1_1.png",
+    // },  
 
     watchHistory: {
         type: [mongoose.Schema.Types.ObjectId],
@@ -53,9 +56,9 @@ refreshToken: {
 
 
 userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-        this.password = await bcrypt.hash(this.password, 10);
-        next();
+    if (!this.isModified("password")) return (next);
+        this.password = await bcrypt.hash(this.password, 10)
+    
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
