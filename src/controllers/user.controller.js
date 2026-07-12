@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async(req, res) => {
    const avatar = await uploadToCloudinary(avatarLocalPath, "avatar");
    const coverImage = await uploadToCloudinary(coverImageLocalPath, "coverImage");
 
-   if (!avatar || !coverImage) {
+   if(!avatar || !coverImage){
     throw new ApiError(500, "Failed to upload images");
    }    
 
@@ -55,16 +55,13 @@ const registerUser = asyncHandler(async(req, res) => {
 });
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
         if(!createdUser){
-            throw new ApiError(500, "User not found after creation");
+    throw new ApiError(500, "User not found after creation");
         } 
         
         return res.status(201).json(
-        {
-            success: true,
-            user: createdUser,
-            massage: "User registered successfully"
+        new ApiResponse(201,  createdUser , "User registered successfully")
 
-         })
+         )
 })
 
 export { registerUser };
