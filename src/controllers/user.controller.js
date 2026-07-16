@@ -110,7 +110,7 @@ if(!user){
 }
 
 // check password
-const passwordValidate = await User.isPasswordCorrect(password)
+const passwordValidate = await user.isPasswordCorrect(password)
     if(!passwordValidate){
         throw new ApiError(401 ," Invalid User Credentional ")
 }
